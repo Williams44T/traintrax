@@ -41,11 +41,10 @@ const syncOptions = {
   alter: true,
 };
 
-sequelize.authenticate()
-.then(() => console.log('connected to ' + sequelizeOptions.storage))
-.then(() => sequelize.sync(syncOptions))
-.catch((err) => console.log('ERROR:', err.message));
+sequelize
+  .authenticate()
+  .then(() => console.log('connected to ' + sequelizeOptions.storage))
+  .then(() => sequelize.sync(syncOptions))
+  .catch((err) => console.log('ERROR:', err.message));
 
 module.exports = { Workout, Exercise, Set };
-
-
