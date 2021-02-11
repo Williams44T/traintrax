@@ -15,15 +15,15 @@ const workoutSchema = {
 };
 
 const exerciseSchema = {
-  name: STRING,
-  index: INTEGER,
   date: STRING,
+  exerciseIdx: INTEGER,
+  name: STRING,
 };
 
 const setSchema = {
-  exercise_idx: INTEGER,
-  index: INTEGER,
   date: STRING,
+  exerciseIdx: INTEGER,
+  setIdx: INTEGER,
   goal: INTEGER,
   actual: INTEGER,
   weight: INTEGER,
