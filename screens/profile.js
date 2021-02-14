@@ -1,21 +1,22 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Loading, Profile, Auth } from '../components';
+import * as firebase from 'firebase';
+import firebaseConfig from '../firebase.config.js';
 
-export default function Profile() {
-  return (
-    <View style={styles.container}>
-      <Text>Profile Screen</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+if (firebase.apps.length === 0) {
+  firebase.initializeApp(firebaseConfig);
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default function () {
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((user) => {
+      setLoggedIn(user);
+      setLoading(false);
+    });
+  }, []);
+
+  return loading ? <Loading /> : loggedIn ? <Profile /> : <Auth />;
+}

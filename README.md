@@ -17,8 +17,7 @@ This mobile app aims to allow users to track their workouts and view stats per e
 ---
 ## Technologies
 - Expo for a fast React Native build
-- SQLite for local storage of workouts
-- sequelize and sqlite3 for driving SQLite
+- Firebase for user authentication and storage
 
 ---
 ---
@@ -32,6 +31,12 @@ This mobile app aims to allow users to track their workouts and view stats per e
 ---
 ## Schemas
 
+### User
+```
+{
+  name: STRING,
+}
+```
 ### Workout
 ```
 {
