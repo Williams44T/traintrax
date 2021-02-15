@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Loading, Profile, Auth } from '../components';
 import * as firebase from 'firebase';
-import firebaseConfig from '../firebase.config.js';
+import firebaseKey from '../firebaseKey.js';
 
 if (firebase.apps.length === 0) {
-  firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(firebaseKey);
 }
 
 export default function () {
