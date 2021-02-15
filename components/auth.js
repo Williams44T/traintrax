@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
-import * as firebase from 'firebase';
+import firebase from 'firebase';
+import 'firebase/firestore';
+
+const { auth, firestore } = firebase;
 
 export default function Auth() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const signIn = () => {
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(console.log)
-      .catch(console.log);
+    auth().signInWithEmailAndPassword(email, password).catch(console.log);
   };
 
   const signUp = () => {
-    firebase
-      .auth()
+    auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(console.log)
+      .then((res) => {
+        firestore().collection('users').doc(res.user.uid).set({ email });
+      })
       .catch(console.log);
   };
 
