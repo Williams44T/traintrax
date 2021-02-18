@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 import firebase from 'firebase';
-import 'firebase/firestore';
 
 const { auth, firestore } = firebase;
 

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Loading, Profile, Auth } from '../components';
-import * as firebase from 'firebase';
+import firebase from 'firebase/app';
 import firebaseKey from '../firebaseKey.js';
+import 'firebase/firestore';
 
 if (firebase.apps.length === 0) {
   firebase.initializeApp(firebaseKey);
