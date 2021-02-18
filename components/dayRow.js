@@ -4,15 +4,21 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 export default function DayRow({ navigation, row }) {
   return (
     <View style={styles.row}>
-      {row.map((day, i) => (
-        <TouchableOpacity
-          key={i}
-          style={styles.day}
-          onPress={() => navigation.navigate('Workout')}
-        >
-          <Text style={styles.dateText}>{day.toDateString().slice(4, 10)}</Text>
-        </TouchableOpacity>
-      ))}
+      {row.map((day, i) => {
+        const today = new Date().toDateString();
+        const dayText = day.toDateString();
+        const style =
+          today === dayText ? [styles.day, styles.today] : styles.day;
+        return (
+          <TouchableOpacity
+            key={i}
+            style={style}
+            onPress={() => navigation.navigate('Workout')}
+          >
+            <Text style={styles.dateText}>{dayText.slice(0, 10)}</Text>
+          </TouchableOpacity>
+        );
+      })}
     </View>
   );
 }
@@ -27,9 +33,12 @@ const styles = StyleSheet.create({
     height: 130,
     margin: 10,
     borderRadius: 5,
-    padding: 10,
+    paddingRight: 5,
     elevation: 4,
     backgroundColor: '#fff',
+  },
+  today: {
+    backgroundColor: 'lightblue',
   },
   dateText: {
     fontSize: 10,
