@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Button } from 'react-native';
+import { DayRow } from '../components';
 
 export default function Calendar({ navigation }) {
   var [date, setDate] = useState(new Date());
@@ -15,24 +16,6 @@ export default function Calendar({ navigation }) {
     updateTitle();
     setDate(new Date(date));
   }, []);
-
-  const DateRow = (props) => {
-    return (
-      <View style={styles.row}>
-        {props.row.map((day, i) => (
-          <TouchableOpacity
-            key={i}
-            style={styles.date}
-            onPress={() => navigation.navigate('Workout')}
-          >
-            <Text style={styles.dateText}>
-              {day.toDateString().slice(4, 10)}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-    );
-  };
 
   const addDay = () => {
     date.setDate(date.getDate() + 1);
@@ -52,9 +35,9 @@ export default function Calendar({ navigation }) {
         <Button title="Next Week" onPress={() => changeWeek('next')} />
       </View>
       <View style={styles.container}>
-        <DateRow row={[new Date(date), addDay()]} />
-        <DateRow row={[addDay(), addDay(), addDay()]} />
-        <DateRow row={[addDay(), addDay()]} />
+        <DayRow row={[new Date(date), addDay()]} navigation={navigation} />
+        <DayRow row={[addDay(), addDay(), addDay()]} navigation={navigation} />
+        <DayRow row={[addDay(), addDay()]} navigation={navigation} />
       </View>
       <StatusBar style="auto" />
     </View>
@@ -62,9 +45,6 @@ export default function Calendar({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  headerRight: {
-    marginRight: 30,
-  },
   container: {
     flex: 1,
     alignItems: 'center',
@@ -75,20 +55,5 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     padding: 10,
-  },
-  row: {
-    flexDirection: 'row',
-  },
-  date: {
-    alignItems: 'flex-end',
-    width: 100,
-    height: 130,
-    margin: 10,
-    borderRadius: 5,
-    padding: 10,
-    elevation: 4,
-  },
-  dateText: {
-    fontSize: 10,
   },
 });
