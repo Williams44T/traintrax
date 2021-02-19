@@ -1,15 +1,31 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, FlatList, Button } from 'react-native';
-import { Exercise, Set } from '../components';
+import { Exercise } from '../components';
 
 export default function Workout() {
   const [exercises, setExercises] = useState(dummyData.exercises);
   const [title, setTitle] = useState(dummyData.title);
   const [bodyweight, setBodyweight] = useState(dummyData.bodyweight);
 
-  const renderItem = ({ item }) => {
-    return <Exercise exercise={item} />;
+  const addExercise = () => {
+    exercises.push(['untitled', [[5, '', 100]]]);
+    setExercises(exercises.slice());
+  };
+
+  const updateExercise = (idx, newTitle) => {
+    exercises[idx][0] = newTitle;
+    setExercises(exercises.slice());
+  };
+
+  const renderItem = ({ item, index }) => {
+    return (
+      <Exercise exercise={item} updateExercise={updateExercise} idx={index} />
+    );
+  };
+
+  const Footer = () => {
+    return <Button title={'ADD EXERCISE'} onPress={addExercise} />;
   };
 
   return (
@@ -20,8 +36,9 @@ export default function Workout() {
         data={exercises}
         keyExtractor={(_, i) => String(i)}
         renderItem={renderItem}
+        ListFooterComponent={<Footer />}
+        removeClippedSubviews={false}
       />
-      <Button title={'ADD EXERCISE'} />
       <StatusBar style="auto" />
     </View>
   );

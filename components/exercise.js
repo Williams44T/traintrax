@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  FlatList,
+  TextInput,
+} from 'react-native';
 import { Set } from '../components';
 
-export default function Exercise({ exercise }) {
+export default function Exercise({ exercise, updateExercise, idx }) {
   const [title, setTitle] = useState(exercise[0]);
   const [sets, setSets] = useState(exercise[1]);
 
@@ -17,8 +24,8 @@ export default function Exercise({ exercise }) {
     setSets(sets.slice());
   };
 
-  const updateSet = (idx, newSet) => {
-    sets[idx] = newSet;
+  const updateSet = (setIdx, newSet) => {
+    sets[setIdx] = newSet;
     setSets(sets.slice());
   };
 
@@ -29,7 +36,11 @@ export default function Exercise({ exercise }) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text>{title}</Text>
+        <TextInput
+          value={title}
+          onChangeText={setTitle}
+          onEndEditing={() => updateExercise(idx, title)}
+        />
         <View style={styles.toolbar}>
           <View style={styles.setCounter}>
             <Button title={'-'} onPress={() => changeSetCount('-')} />
