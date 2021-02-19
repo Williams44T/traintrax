@@ -3,18 +3,22 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Button } from 'react-native';
 import { DayRow } from '../components';
 
-export default function Calendar({ navigation }) {
-  var [date, setDate] = useState(new Date());
+export default function Calendar({ navigation, test }) {
+  var [date, setDate] = useState(
+    new Date(
+      new Date().getFullYear(),
+      new Date().getMonth(),
+      new Date().getDate() - new Date().getDay(),
+    ),
+  );
 
   const updateTitle = () => {
     navigation.setOptions({ title: 'Week of ' + date.toDateString().slice(4) });
   };
 
   useEffect(() => {
-    var weekDay = date.getDay();
-    date.setDate(date.getDate() - weekDay);
     updateTitle();
-    setDate(new Date(date));
+    console.log('useEffect');
   }, []);
 
   const addDay = () => {
@@ -23,7 +27,15 @@ export default function Calendar({ navigation }) {
   };
 
   const changeWeek = (direction) => {
-    direction === 'next' ? addDay() : date.setDate(date.getDate() - 13);
+    if (direction === 'next') {
+      addDay();
+    } else if (direction === 'prev') {
+      date.setDate(date.getDate() - 13);
+    } else {
+      date = new Date();
+      date.setDate(date.getDate(date) - date.getDay());
+    }
+
     updateTitle();
     setDate(new Date(date));
   };
@@ -31,8 +43,9 @@ export default function Calendar({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.btnBox}>
-        <Button title="Last Week" onPress={() => changeWeek('last')} />
-        <Button title="Next Week" onPress={() => changeWeek('next')} />
+        <Button title="<" onPress={() => changeWeek('prev')} />
+        <Button title="Today" onPress={changeWeek} />
+        <Button title=">" onPress={() => changeWeek('next')} />
       </View>
       <View style={styles.container}>
         <DayRow row={[new Date(date), addDay()]} navigation={navigation} />
