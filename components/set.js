@@ -7,17 +7,26 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-export default function Set({ set }) {
+export default function Set({ set, updateSet, idx }) {
   const [goal, setGoal] = useState(String(set[0]));
   const [reps, setReps] = useState(set[1]);
   const [weight, setWeight] = useState(String(set[2]));
 
+  const update = () => {
+    updateSet(idx, [goal, reps, weight]);
+  };
+
   const changeReps = () => {
-    reps === 0 ? setReps('') : reps === '' ? setReps(goal) : setReps(reps - 1);
+    const newReps = reps === 0 ? '' : reps === '' ? goal : reps - 1;
+    setReps(newReps);
+    updateSet(idx, [goal, newReps, weight]);
   };
 
   const checkReps = () => {
-    reps > goal ? setReps(goal) : null;
+    if (reps > goal) {
+      setReps(goal);
+      updateSet(idx, [goal, goal, weight]);
+    }
   };
 
   const repStyle =
@@ -42,6 +51,7 @@ export default function Set({ set }) {
         keyboardType={'number-pad'}
         value={weight}
         onChangeText={setWeight}
+        onEndEditing={() => updateSet(idx, [goal, reps, weight])}
       />
     </View>
   );

@@ -6,8 +6,24 @@ export default function Exercise({ exercise }) {
   const [title, setTitle] = useState(exercise[0]);
   const [sets, setSets] = useState(exercise[1]);
 
-  const renderItem = ({ item }) => {
-    return <Set set={item} />;
+  const changeSetCount = (direction) => {
+    if (direction === '+') {
+      const last = sets[sets.length - 1];
+      sets.push([last[0], '', last[2]]);
+    } else if (sets.length > 1) {
+      sets.pop();
+    }
+
+    setSets(sets.slice());
+  };
+
+  const updateSet = (idx, newSet) => {
+    sets[idx] = newSet;
+    setSets(sets.slice());
+  };
+
+  const renderItem = ({ item, index }) => {
+    return <Set set={item} updateSet={updateSet} idx={index} />;
   };
 
   return (
@@ -16,9 +32,9 @@ export default function Exercise({ exercise }) {
         <Text>{title}</Text>
         <View style={styles.toolbar}>
           <View style={styles.setCounter}>
-            <Button title={'+'} />
+            <Button title={'-'} onPress={() => changeSetCount('-')} />
             <Text>SETS</Text>
-            <Button title={'-'} />
+            <Button title={'+'} onPress={() => changeSetCount('+')} />
           </View>
           <Button title={'x'} />
         </View>
