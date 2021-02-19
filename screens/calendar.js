@@ -18,7 +18,6 @@ export default function Calendar({ navigation, test }) {
 
   useEffect(() => {
     updateTitle();
-    console.log('useEffect');
   }, []);
 
   const addDay = () => {
