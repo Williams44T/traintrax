@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, FlatList, Button } from 'react-native';
-import { Exercise } from '../components';
+import { Exercise, Set } from '../components';
 
 export default function Workout() {
   const [exercises, setExercises] = useState(dummyData.exercises);
@@ -18,7 +18,7 @@ export default function Workout() {
       <FlatList
         style={styles.exercises}
         data={exercises}
-        keyExtractor={(_, i) => i}
+        keyExtractor={(_, i) => String(i)}
         renderItem={renderItem}
       />
       <Button title={'ADD EXERCISE'} />

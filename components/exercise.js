@@ -1,15 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
+import { Set } from '../components';
 
 export default function Exercise({ exercise }) {
+  const [title, setTitle] = useState(exercise[0]);
+  const [sets, setSets] = useState(exercise[1]);
+
   const renderItem = ({ item }) => {
-    return <Text>{item[0]}</Text>;
+    return <Set set={item} />;
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text>{exercise[0]}</Text>
+        <Text>{title}</Text>
         <View style={styles.toolbar}>
           <View style={styles.setCounter}>
             <Button title={'+'} />
@@ -21,8 +25,8 @@ export default function Exercise({ exercise }) {
       </View>
       <FlatList
         style={styles.sets}
-        data={exercise[1]}
-        keyExtractor={(_, i) => i}
+        data={sets}
+        keyExtractor={(_, i) => String(i)}
         renderItem={renderItem}
         horizontal
       />
