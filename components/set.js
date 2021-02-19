@@ -26,6 +26,8 @@ export default function Set({ set, updateSet, idx }) {
     if (reps > goal) {
       setReps(goal);
       updateSet(idx, [goal, goal, weight]);
+    } else {
+      updateSet(idx, [goal, reps, weight]);
     }
   };
 
