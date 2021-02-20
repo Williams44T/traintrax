@@ -13,6 +13,11 @@ export default function Workout() {
     setExercises(exercises.slice());
   };
 
+  const removeExercise = (idx) => {
+    exercises.splice(idx, 1);
+    setExercises(exercises.slice());
+  };
+
   const updateExercise = (idx, newTitle) => {
     exercises[idx][0] = newTitle;
     setExercises(exercises.slice());
@@ -20,7 +25,12 @@ export default function Workout() {
 
   const renderItem = ({ item, index }) => {
     return (
-      <Exercise exercise={item} updateExercise={updateExercise} idx={index} />
+      <Exercise
+        exercise={item}
+        updateExercise={updateExercise}
+        removeExercise={removeExercise}
+        idx={index}
+      />
     );
   };
 

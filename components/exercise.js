@@ -9,7 +9,12 @@ import {
 } from 'react-native';
 import { Set } from '../components';
 
-export default function Exercise({ exercise, updateExercise, idx }) {
+export default function Exercise({
+  exercise,
+  updateExercise,
+  removeExercise,
+  idx,
+}) {
   const [title, setTitle] = useState(exercise[0]);
   const [sets, setSets] = useState(exercise[1]);
 
@@ -47,7 +52,7 @@ export default function Exercise({ exercise, updateExercise, idx }) {
             <Text>SETS</Text>
             <Button title={'+'} onPress={() => changeSetCount('+')} />
           </View>
-          <Button title={'x'} />
+          <Button title={'x'} onPress={() => removeExercise(idx)} />
         </View>
       </View>
       <FlatList
