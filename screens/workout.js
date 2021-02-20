@@ -1,6 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, FlatList, Button } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  FlatList,
+  Button,
+  TextInput,
+} from 'react-native';
 import { Exercise } from '../components';
 
 export default function Workout() {
@@ -40,7 +47,18 @@ export default function Workout() {
 
   return (
     <View style={styles.container}>
-      <Text>{title}</Text>
+      <View style={styles.header}>
+        <TextInput value={title} onChangeText={setTitle} />
+        <View style={[styles.header, styles.bodyweight]}>
+          <Text>BW:</Text>
+          <TextInput
+            style={styles.bwInput}
+            value={String(bodyweight)}
+            keyboardType="number-pad"
+            onChangeText={setBodyweight}
+          />
+        </View>
+      </View>
       <FlatList
         style={styles.exercises}
         data={exercises}
@@ -60,6 +78,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    borderWidth: 2,
+  },
+  bodyweight: {
+    width: '25%',
+  },
+  bwInput: {
+    width: '100%',
+    paddingLeft: 4,
   },
   exercises: {
     width: '100%',
