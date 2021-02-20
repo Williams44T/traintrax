@@ -15,22 +15,23 @@ export default function Exercise({
   removeExercise,
   idx,
 }) {
-  const [title, setTitle] = useState(exercise[0]);
-  const [sets, setSets] = useState(exercise[1]);
+  const [title, setTitle] = useState(exercise.name);
+  const [sets, setSets] = useState(exercise.sets);
 
   const changeSetCount = (direction) => {
     if (direction === '+') {
       const last = sets[sets.length - 1];
-      sets.push([last[0], '', last[2]]);
+      sets.push({ goal: last.goal, reps: '', weight: last.weight });
     } else if (sets.length > 1) {
       sets.pop();
     }
-
+    updateExercise(idx, { sets });
     setSets(sets.slice());
   };
 
   const updateSet = (setIdx, newSet) => {
     sets[setIdx] = newSet;
+    updateExercise(idx, { sets });
     setSets(sets.slice());
   };
 
@@ -44,7 +45,7 @@ export default function Exercise({
         <TextInput
           value={title}
           onChangeText={setTitle}
-          onEndEditing={() => updateExercise(idx, title)}
+          onEndEditing={() => updateExercise(idx, { title })}
         />
         <View style={styles.toolbar}>
           <View style={styles.setCounter}>

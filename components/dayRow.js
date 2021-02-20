@@ -13,7 +13,9 @@ export default function DayRow({ navigation, row }) {
           <TouchableOpacity
             key={i}
             style={style}
-            onPress={() => navigation.navigate('Workout')}
+            onPress={() =>
+              navigation.navigate('Workout', { date: dayText.slice(0, 15) })
+            }
           >
             <Text style={styles.dateText}>{dayText.slice(0, 10)}</Text>
           </TouchableOpacity>

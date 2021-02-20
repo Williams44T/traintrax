@@ -8,22 +8,22 @@ import {
 } from 'react-native';
 
 export default function Set({ set, updateSet, idx }) {
-  const [goal, setGoal] = useState(String(set[0]));
-  const [reps, setReps] = useState(set[1]);
-  const [weight, setWeight] = useState(String(set[2]));
+  const [goal, setGoal] = useState(String(set.goal));
+  const [reps, setReps] = useState(set.reps);
+  const [weight, setWeight] = useState(String(set.weight));
 
   const changeReps = () => {
     const newReps = reps === 0 ? '' : reps === '' ? goal : reps - 1;
     setReps(newReps);
-    updateSet(idx, [goal, newReps, weight]);
+    updateSet(idx, { goal, reps: newReps, weight });
   };
 
   const checkReps = () => {
     if (reps > goal) {
       setReps(goal);
-      updateSet(idx, [goal, goal, weight]);
+      updateSet(idx, { goal, reps: goal, weight });
     } else {
-      updateSet(idx, [goal, reps, weight]);
+      updateSet(idx, { goal, reps, weight });
     }
   };
 
@@ -49,7 +49,7 @@ export default function Set({ set, updateSet, idx }) {
         keyboardType={'number-pad'}
         value={weight}
         onChangeText={setWeight}
-        onEndEditing={() => updateSet(idx, [goal, reps, weight])}
+        onEndEditing={() => updateSet(idx, { goal, reps, weight })}
       />
     </View>
   );
