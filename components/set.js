@@ -12,10 +12,6 @@ export default function Set({ set, updateSet, idx }) {
   const [reps, setReps] = useState(set[1]);
   const [weight, setWeight] = useState(String(set[2]));
 
-  const update = () => {
-    updateSet(idx, [goal, reps, weight]);
-  };
-
   const changeReps = () => {
     const newReps = reps === 0 ? '' : reps === '' ? goal : reps - 1;
     setReps(newReps);
