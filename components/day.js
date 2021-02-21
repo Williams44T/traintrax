@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import cache from '../dbCache';
 import firebase from 'firebase';
 const { firestore, auth } = firebase;
 
 export default function Day({ navigation, date }) {
-  const [workout, setWorkout] = useState({
-    title: 'untitled',
-    bodyweight: 900,
-    exercises: [],
-  });
-  const [workoutExists, setWorkoutExists] = useState(false);
+  const [workout, setWorkout] = useState(cache[date] || cache.defaultWorkout());
+  const [workoutExists, setWorkoutExists] = useState(
+    !!cache[date] &&
+      (cache[date].title !== 'untitled' || !!cache[date].exercises.length),
+  );
 
   const getWorkout = useCallback(async () => {
     firestore()
@@ -20,16 +20,19 @@ export default function Day({ navigation, date }) {
       .get()
       .then((workoutDoc) => {
         if (workoutDoc.exists) {
-          setWorkout(workoutDoc.data());
+          cache[date] = workoutDoc.data();
+          setWorkout(cache[date]);
           setWorkoutExists(true);
+        } else {
+          cache[date] = cache.defaultWorkout();
         }
       })
       .catch(console.log);
   }, [date]);
 
   useEffect(() => {
-    getWorkout();
-  }, [getWorkout]);
+    !cache[date] ? getWorkout() : null;
+  }, [date, getWorkout]);
 
   const style =
     date === new Date().toDateString().slice(0, 15)
