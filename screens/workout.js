@@ -17,6 +17,21 @@ export default function Workout({ navigation, route }) {
   const [title, setTitle] = useState(dummyData.title);
   const [bodyweight, setBodyweight] = useState(dummyData.bodyweight);
 
+  const fetchWorkout = useCallback(() => {
+    firestore()
+      .collection('users')
+      .doc(auth().currentUser.uid)
+      .collection('workouts')
+      .doc(route.params.date)
+      .get()
+      .then((user) => {
+        setTitle(user.data().title);
+        setBodyweight(user.data().bodyweight);
+        setExercises(user.data().exercises);
+      })
+      .catch(console.log);
+  }, [route]);
+
   const saveWorkout = useCallback(() => {
     firestore()
       .collection('users')
@@ -30,9 +45,15 @@ export default function Workout({ navigation, route }) {
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => <Button title="SAVE" onPress={saveWorkout} />,
+    });
+  }, [navigation, saveWorkout]);
+
+  useEffect(() => {
+    navigation.setOptions({
       title: route.params.date,
     });
-  }, [route, navigation, saveWorkout]);
+    fetchWorkout();
+  }, [navigation, route, fetchWorkout]);
 
   const addExercise = () => {
     exercises.push({
