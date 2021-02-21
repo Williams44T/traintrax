@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { StyleSheet, View, Button } from 'react-native';
-import { DayRow } from '../components';
+import { Day } from '../components';
 
 export default function Calendar({ navigation, test }) {
   var [date, setDate] = useState(
@@ -12,13 +12,13 @@ export default function Calendar({ navigation, test }) {
     ),
   );
 
-  const updateTitle = () => {
+  const updateTitle = useCallback(() => {
     navigation.setOptions({ title: 'Week of ' + date.toDateString().slice(4) });
-  };
+  }, [navigation, date]);
 
   useEffect(() => {
     updateTitle();
-  }, []);
+  }, [updateTitle]);
 
   const addDay = () => {
     date.setDate(date.getDate() + 1);
@@ -39,6 +39,20 @@ export default function Calendar({ navigation, test }) {
     setDate(new Date(date));
   };
 
+  const DayRow = ({ row }) => {
+    return (
+      <View style={styles.row}>
+        {row.map((day, i) => (
+          <Day
+            key={i}
+            navigation={navigation}
+            date={day.toDateString().slice(0, 15)}
+          />
+        ))}
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.btnBox}>
@@ -47,9 +61,9 @@ export default function Calendar({ navigation, test }) {
         <Button title=">" onPress={() => changeWeek('next')} />
       </View>
       <View style={styles.container}>
-        <DayRow row={[new Date(date), addDay()]} navigation={navigation} />
-        <DayRow row={[addDay(), addDay(), addDay()]} navigation={navigation} />
-        <DayRow row={[addDay(), addDay()]} navigation={navigation} />
+        <DayRow row={[new Date(date), addDay()]} />
+        <DayRow row={[addDay(), addDay(), addDay()]} />
+        <DayRow row={[addDay(), addDay()]} />
       </View>
       <StatusBar style="auto" />
     </View>
@@ -67,5 +81,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     padding: 10,
+  },
+  row: {
+    flexDirection: 'row',
   },
 });

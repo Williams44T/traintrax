@@ -13,64 +13,54 @@ import firebase from 'firebase';
 const { auth, firestore } = firebase;
 
 export default function Workout({ navigation, route }) {
-  const [exercises, setExercises] = useState(DBtestData);
-  const [title, setTitle] = useState(dummyData.title);
-  const [bodyweight, setBodyweight] = useState(dummyData.bodyweight);
-
-  const fetchWorkout = useCallback(() => {
-    firestore()
-      .collection('users')
-      .doc(auth().currentUser.uid)
-      .collection('workouts')
-      .doc(route.params.date)
-      .get()
-      .then((user) => {
-        setTitle(user.data().title);
-        setBodyweight(user.data().bodyweight);
-        setExercises(user.data().exercises);
-      })
-      .catch(console.log);
-  }, [route]);
+  const { workout, date } = route.params;
+  const [exercises, setExercises] = useState(workout.exercises);
+  const [title, setTitle] = useState(workout.title);
+  const [bodyweight, setBodyweight] = useState(workout.bodyweight);
 
   const saveWorkout = useCallback(() => {
     firestore()
       .collection('users')
       .doc(auth().currentUser.uid)
       .collection('workouts')
-      .doc(route.params.date)
+      .doc(date)
       .set({ title, bodyweight, exercises })
       .catch(console.log);
-  }, [route, title, bodyweight, exercises]);
+  }, [date, title, bodyweight, exercises]);
 
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => <Button title="SAVE" onPress={saveWorkout} />,
+      title: date,
     });
-  }, [navigation, saveWorkout]);
-
-  useEffect(() => {
-    navigation.setOptions({
-      title: route.params.date,
-    });
-    fetchWorkout();
-  }, [navigation, route, fetchWorkout]);
+  }, [date, navigation, saveWorkout]);
 
   const addExercise = () => {
-    exercises.push({
+    workout.exercises.push({
       name: 'untitled',
       sets: [{ goal: 5, reps: '', weight: 100 }],
     });
-    setExercises(exercises.slice());
+    setExercises(workout.exercises.slice());
   };
 
   const removeExercise = (idx) => {
-    exercises.splice(idx, 1);
-    setExercises(exercises.slice());
+    workout.exercises.splice(idx, 1);
+    setExercises(workout.exercises.slice());
   };
 
   const updateExercise = (idx, newInfo) => {
-    exercises[idx] = { ...exercises[idx], ...newInfo };
-    setExercises(exercises.slice());
+    workout.exercises[idx] = { ...exercises[idx], ...newInfo };
+    setExercises(workout.exercises.slice());
+  };
+
+  const updateTitle = (value) => {
+    workout.title = value;
+    setTitle(value);
+  };
+
+  const updateBW = (value) => {
+    workout.bodyweight = value;
+    setBodyweight(value);
   };
 
   const renderItem = ({ item, index }) => {
@@ -91,14 +81,14 @@ export default function Workout({ navigation, route }) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TextInput value={title} onChangeText={setTitle} />
+        <TextInput value={title} onChangeText={updateTitle} />
         <View style={[styles.header, styles.bodyweight]}>
           <Text>BW:</Text>
           <TextInput
             style={styles.bwInput}
             value={String(bodyweight)}
             keyboardType="number-pad"
-            onChangeText={setBodyweight}
+            onChangeText={updateBW}
           />
         </View>
       </View>
@@ -141,53 +131,3 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
 });
-
-const dummyData = {
-  title: 'squats-bench-rows',
-  bodyweight: 193,
-};
-
-const exercises = [];
-dummyData.exercises = exercises;
-
-exercises.push(['squats', []]);
-exercises.push(['bench', []]);
-exercises.push(['rows', []]);
-
-exercises[0][1].push([5, 5, 325]);
-exercises[0][1].push([5, 5, 325]);
-exercises[0][1].push([5, 5, 325]);
-exercises[0][1].push([5, 5, 325]);
-exercises[0][1].push([5, 5, 325]);
-
-exercises[1][1].push([5, 5, 265]);
-exercises[1][1].push([5, 5, 265]);
-exercises[1][1].push([5, 5, 265]);
-exercises[1][1].push([5, 4, 265]);
-exercises[1][1].push([5, 4, 265]);
-
-exercises[2][1].push([5, 5, 195]);
-exercises[2][1].push([5, 5, 195]);
-exercises[2][1].push([5, 5, 195]);
-exercises[2][1].push([5, 5, 195]);
-exercises[2][1].push([5, 5, 195]);
-
-const DBtestData = [];
-DBtestData.push({ name: 'squats', sets: [] });
-DBtestData.push({ name: 'bench', sets: [] });
-DBtestData.push({ name: 'rows', sets: [] });
-DBtestData[0].sets.push({ goal: 5, reps: 5, weight: 330 });
-DBtestData[0].sets.push({ goal: 5, reps: 5, weight: 330 });
-DBtestData[0].sets.push({ goal: 5, reps: 5, weight: 330 });
-DBtestData[0].sets.push({ goal: 5, reps: 5, weight: 330 });
-DBtestData[0].sets.push({ goal: 5, reps: 5, weight: 330 });
-DBtestData[1].sets.push({ goal: 5, reps: 5, weight: 265 });
-DBtestData[1].sets.push({ goal: 5, reps: 5, weight: 265 });
-DBtestData[1].sets.push({ goal: 5, reps: 5, weight: 265 });
-DBtestData[1].sets.push({ goal: 5, reps: 4, weight: 265 });
-DBtestData[1].sets.push({ goal: 5, reps: 4, weight: 265 });
-DBtestData[2].sets.push({ goal: 5, reps: 5, weight: 195 });
-DBtestData[2].sets.push({ goal: 5, reps: 5, weight: 195 });
-DBtestData[2].sets.push({ goal: 5, reps: 5, weight: 195 });
-DBtestData[2].sets.push({ goal: 5, reps: 5, weight: 195 });
-DBtestData[2].sets.push({ goal: 5, reps: 5, weight: 195 });

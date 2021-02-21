@@ -15,24 +15,29 @@ export default function Exercise({
   removeExercise,
   idx,
 }) {
-  const [title, setTitle] = useState(exercise.name);
+  const [name, setName] = useState(exercise.name);
   const [sets, setSets] = useState(exercise.sets);
 
   const changeSetCount = (direction) => {
     if (direction === '+') {
       const last = sets[sets.length - 1];
-      sets.push({ goal: last.goal, reps: '', weight: last.weight });
+      exercise.sets.push({ goal: last.goal, reps: '', weight: last.weight });
     } else if (sets.length > 1) {
-      sets.pop();
+      exercise.sets.pop();
     }
-    updateExercise(idx, { sets });
-    setSets(sets.slice());
+    updateExercise(idx, { sets: exercise.sets });
+    setSets(exercise.sets.slice());
   };
 
   const updateSet = (setIdx, newSet) => {
-    sets[setIdx] = newSet;
-    updateExercise(idx, { sets });
-    setSets(sets.slice());
+    exercise.sets[setIdx] = newSet;
+    updateExercise(idx, { sets: exercise.sets });
+    setSets(exercise.sets.slice());
+  };
+
+  const updateName = (value) => {
+    exercise.name = value;
+    setName(value);
   };
 
   const renderItem = ({ item, index }) => {
@@ -43,9 +48,9 @@ export default function Exercise({
     <View style={styles.container}>
       <View style={styles.header}>
         <TextInput
-          value={title}
-          onChangeText={setTitle}
-          onEndEditing={() => updateExercise(idx, { title })}
+          value={name}
+          onChangeText={updateName}
+          onEndEditing={() => updateExercise(idx, { name })}
         />
         <View style={styles.toolbar}>
           <View style={styles.setCounter}>
