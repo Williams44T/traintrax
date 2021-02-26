@@ -34,6 +34,14 @@ export default function Day({ navigation, date }) {
     !cache[date] ? getWorkout() : null;
   }, [date, getWorkout]);
 
+  const updateWorkout = (updatedWorkout) => {
+    setWorkout(updatedWorkout || cache[date]);
+    setWorkoutExists(
+      !!cache[date] &&
+        (cache[date].title !== 'untitled' || !!cache[date].exercises.length),
+    );
+  };
+
   const style =
     date === new Date().toDateString().slice(0, 15)
       ? [styles.day, styles.today]
@@ -50,7 +58,9 @@ export default function Day({ navigation, date }) {
   return (
     <TouchableOpacity
       style={style}
-      onPress={() => navigation.navigate('Workout', { date, workout })}
+      onPress={() =>
+        navigation.navigate('Workout', { date, workout, updateWorkout })
+      }
     >
       <Text style={styles.dateText}>{date.slice(0, 10)}</Text>
       <View style={styles.workout}>{workoutDisplay}</View>

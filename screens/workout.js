@@ -10,10 +10,12 @@ import {
 } from 'react-native';
 import { Exercise } from '../components';
 import firebase from 'firebase';
+import { Ionicons } from '@expo/vector-icons';
+import cache from '../dbCache';
 const { auth, firestore } = firebase;
 
 export default function Workout({ navigation, route }) {
-  const { workout, date } = route.params;
+  const { workout, date, updateWorkout } = route.params;
   const [exercises, setExercises] = useState(workout.exercises);
   const [title, setTitle] = useState(workout.title);
   const [bodyweight, setBodyweight] = useState(workout.bodyweight);
@@ -28,12 +30,40 @@ export default function Workout({ navigation, route }) {
       .catch(console.log);
   }, [date, title, bodyweight, exercises]);
 
+  const deleteWorkout = useCallback(() => {
+    firestore()
+      .collection('users')
+      .doc(auth().currentUser.uid)
+      .collection('workouts')
+      .doc(date)
+      .delete()
+      .catch(console.log);
+
+    delete cache[date];
+    updateWorkout(cache.defaultWorkout());
+  }, [date, updateWorkout]);
+
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => <Button title="SAVE" onPress={saveWorkout} />,
+      headerRight: () => (
+        <View style={styles.header}>
+          <Ionicons
+            name={'save'}
+            onPress={saveWorkout}
+            style={styles.headerRight}
+            size={30}
+          />
+          <Ionicons
+            name={'trash'}
+            onPress={deleteWorkout}
+            style={styles.headerRight}
+            size={30}
+          />
+        </View>
+      ),
       title: date,
     });
-  }, [date, navigation, saveWorkout]);
+  }, [date, navigation, saveWorkout, deleteWorkout]);
 
   const addExercise = () => {
     workout.exercises.push({
@@ -106,6 +136,10 @@ export default function Workout({ navigation, route }) {
 }
 
 const styles = StyleSheet.create({
+  headerRight: {
+    color: 'blue',
+    paddingRight: 20,
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
