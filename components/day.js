@@ -34,8 +34,9 @@ export default function Day({ navigation, date }) {
     !cache[date] ? getWorkout() : null;
   }, [date, getWorkout]);
 
-  const updateWorkout = (updatedWorkout) => {
-    setWorkout(updatedWorkout || cache[date]);
+  const updateWorkout = async (updatedWorkout) => {
+    await setWorkout(cache.defaultWorkout());
+    setWorkout(cache[date]);
     setWorkoutExists(
       !!cache[date] &&
         (cache[date].title !== 'untitled' || !!cache[date].exercises.length),

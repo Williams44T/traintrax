@@ -29,8 +29,9 @@ export default function Workout({ navigation, route }) {
       .set({ title, bodyweight, exercises })
       .catch(console.log);
 
+    updateWorkout();
     navigation.goBack();
-  }, [date, title, bodyweight, exercises, navigation]);
+  }, [date, title, bodyweight, exercises, navigation, updateWorkout]);
 
   const deleteWorkout = useCallback(() => {
     firestore()
@@ -41,8 +42,8 @@ export default function Workout({ navigation, route }) {
       .delete()
       .catch(console.log);
 
-    delete cache[date];
-    updateWorkout(cache.defaultWorkout());
+    cache[date] = cache.defaultWorkout();
+    updateWorkout();
     navigation.goBack();
   }, [date, updateWorkout, navigation]);
 
