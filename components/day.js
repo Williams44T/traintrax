@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import cache from '../dbCache';
+import { Loading } from '../components';
 import firebase from 'firebase';
 const { firestore, auth } = firebase;
 
 export default function Day({ navigation, date }) {
+  const [loading, setLoading] = useState(!cache[date]);
   const [workout, setWorkout] = useState(cache[date] || cache.defaultWorkout());
   const [workoutExists, setWorkoutExists] = useState(
     !!cache[date] &&
@@ -26,6 +28,8 @@ export default function Day({ navigation, date }) {
         } else {
           cache[date] = cache.defaultWorkout();
         }
+        console.log('here');
+        setLoading(false);
       })
       .catch(console.log);
   }, [date]);
@@ -56,6 +60,15 @@ export default function Day({ navigation, date }) {
     </View>
   );
 
+  const preview = loading ? (
+    <Loading />
+  ) : (
+    <>
+      <Text style={styles.dateText}>{date.slice(0, 10)}</Text>
+      <View style={styles.workout}>{workoutDisplay}</View>
+    </>
+  );
+
   return (
     <TouchableOpacity
       style={style}
@@ -63,8 +76,7 @@ export default function Day({ navigation, date }) {
         navigation.navigate('Workout', { date, workout, updateWorkout })
       }
     >
-      <Text style={styles.dateText}>{date.slice(0, 10)}</Text>
-      <View style={styles.workout}>{workoutDisplay}</View>
+      {preview}
     </TouchableOpacity>
   );
 }
