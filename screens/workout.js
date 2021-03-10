@@ -29,6 +29,7 @@ export default function Workout({ navigation, route }) {
       .set({ title, bodyweight, exercises })
       .catch(console.log);
 
+    cache[date] = { title, bodyweight, exercises };
     updateWorkout();
     navigation.goBack();
   }, [date, title, bodyweight, exercises, navigation, updateWorkout]);

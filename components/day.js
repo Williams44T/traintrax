@@ -38,8 +38,8 @@ export default function Day({ navigation, date }) {
     await setWorkout(cache.defaultWorkout());
     setWorkout(cache[date]);
     setWorkoutExists(
-      !!cache[date] &&
-        (cache[date].title !== 'untitled' || !!cache[date].exercises.length),
+      cache[date] &&
+        (cache[date].title !== 'untitled' || cache[date].exercises.length),
     );
   };
 
