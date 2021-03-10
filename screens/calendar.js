@@ -18,7 +18,7 @@ export default function Calendar({ navigation, test }) {
 
   useEffect(() => {
     updateTitle();
-  }, [updateTitle]);
+  }, []);
 
   const addDay = () => {
     date.setDate(date.getDate() + 1);
