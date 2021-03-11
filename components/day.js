@@ -28,7 +28,6 @@ export default function Day({ navigation, date }) {
         } else {
           cache[date] = cache.defaultWorkout();
         }
-        console.log('here');
         setLoading(false);
       })
       .catch(console.log);
