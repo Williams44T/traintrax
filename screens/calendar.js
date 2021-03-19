@@ -60,10 +60,6 @@ export default function Calendar({ navigation, test }) {
 
   return (
     <View style={styles.container}>
-      <LinearGradient
-        colors={['transparent', '#073603', '#073603', 'transparent']}
-        style={styles.background}
-      />
       <View style={styles.btnBox}>
         <TouchableOpacity onPress={() => changeWeek('prev')}>
           <LinearGradient colors={btnGradient} style={styles.btn}>
@@ -96,13 +92,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  background: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    height: 500,
+    backgroundColor: '#fff',
   },
   btnBox: {
     flexDirection: 'row',

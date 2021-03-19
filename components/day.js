@@ -69,12 +69,14 @@ export default function Day({ navigation, date }) {
 
   return (
     <TouchableOpacity
-      style={style}
+      // style={style}
       onPress={() =>
         navigation.navigate('Workout', { date, workout, updateWorkout })
       }
     >
-      {preview}
+      <LinearGradient colors={['#9fa89f', 'transparent','#a2a2a2']} style={style}>
+        {preview}
+      </LinearGradient>
     </TouchableOpacity>
   );
 }
@@ -114,6 +116,7 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   workoutText: {
+    marginBottom: 15,
     color: '#073603',
     fontWeight: 'bold',
   },
