@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect, useCallback } from 'react';
 import { StyleSheet, View, Button } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Day } from '../components';
 
 export default function Calendar({ navigation, test }) {
@@ -55,6 +56,10 @@ export default function Calendar({ navigation, test }) {
 
   return (
     <View style={styles.container}>
+      <LinearGradient
+        colors={['#073603', 'transparent']}
+        style={styles.background}
+      />
       <View style={styles.btnBox}>
         <Button title="<" onPress={() => changeWeek('prev')} />
         <Button title="Today" onPress={changeWeek} />
@@ -75,6 +80,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  background: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height: 500,
   },
   btnBox: {
     flexDirection: 'row',
