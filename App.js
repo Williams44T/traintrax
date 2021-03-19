@@ -52,7 +52,7 @@ const screenOptions = ({ route }) => ({
 });
 
 const tabBarOptions = {
-  activeTintColor: 'tomato',
+  activeTintColor: '#073603',
   inactiveTintColor: 'gray',
 };
 

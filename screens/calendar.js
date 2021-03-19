@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect, useCallback } from 'react';
-import { StyleSheet, View, Button } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Day } from '../components';
 
@@ -14,7 +14,9 @@ export default function Calendar({ navigation, test }) {
   );
 
   const updateTitle = useCallback(() => {
-    navigation.setOptions({ title: 'Week of ' + date.toDateString().slice(4) });
+    navigation.setOptions({
+      title: 'Week Beginning ' + date.toDateString().slice(4),
+    });
   }, [navigation, date]);
 
   useEffect(() => {
@@ -54,16 +56,30 @@ export default function Calendar({ navigation, test }) {
     );
   };
 
+  const btnGradient = ['#073603', '#178038', '#073603'];
+
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={['#073603', 'transparent']}
+        colors={['transparent', '#073603', '#073603', 'transparent']}
         style={styles.background}
       />
       <View style={styles.btnBox}>
-        <Button title="<" onPress={() => changeWeek('prev')} />
-        <Button title="Today" onPress={changeWeek} />
-        <Button title=">" onPress={() => changeWeek('next')} />
+        <TouchableOpacity onPress={() => changeWeek('prev')}>
+          <LinearGradient colors={btnGradient} style={styles.btn}>
+            <Text style={styles.btnText}>&lt;</Text>
+          </LinearGradient>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={changeWeek}>
+          <LinearGradient colors={btnGradient} style={styles.btn}>
+            <Text style={styles.btnText}>TODAY</Text>
+          </LinearGradient>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => changeWeek('next')}>
+          <LinearGradient colors={btnGradient} style={styles.btn}>
+            <Text style={styles.btnText}>&gt;</Text>
+          </LinearGradient>
+        </TouchableOpacity>
       </View>
       <View style={styles.container}>
         <DayRow row={[new Date(date), addDay()]} />
@@ -93,6 +109,18 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     padding: 10,
+  },
+  btn: {
+    borderRadius: 5,
+    paddingVertical: 5,
+    paddingHorizontal: 20,
+    backgroundColor: '#fff',
+    elevation: 4,
+  },
+  btnText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 18,
   },
   row: {
     flexDirection: 'row',

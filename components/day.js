@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import cache from '../dbCache';
 import { Loading } from '../components';
 import firebase from 'firebase';
@@ -54,9 +55,7 @@ export default function Day({ navigation, date }) {
   const workoutDisplay = workoutExists ? (
     <Text style={styles.workoutText}>{workout.title}</Text>
   ) : (
-    <View style={styles.noWorkout}>
-      <Text>+</Text>
-    </View>
+    <Text style={[styles.workoutText, styles.addWorkout]}>+</Text>
   );
 
   const preview = loading ? (
@@ -96,6 +95,8 @@ const styles = StyleSheet.create({
   },
   dateText: {
     fontSize: 10,
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
   },
   workout: {
     flex: 1,
@@ -109,9 +110,14 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 100,
-    backgroundColor: 'grey',
+    backgroundColor: '#ccc',
+    elevation: 4,
   },
   workoutText: {
-    textAlign: 'center',
+    color: '#073603',
+    fontWeight: 'bold',
+  },
+  addWorkout: {
+    fontSize: 60,
   },
 });
