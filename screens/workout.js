@@ -8,6 +8,7 @@ import {
   Button,
   TextInput,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Exercise } from '../components';
 import firebase from 'firebase';
 import { Ionicons } from '@expo/vector-icons';
@@ -115,12 +116,20 @@ export default function Workout({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <TextInput value={title} onChangeText={updateTitle} />
-        <View style={[styles.header, styles.bodyweight]}>
-          <Text>BW:</Text>
+      {/* <LinearGradient
+        colors={['#073603', 'transparent', '#073603']}
+        style={styles.background}
+      /> */}
+      <View style={styles.subHeader}>
+        <TextInput
+          style={styles.subHeaderTxt}
+          value={title}
+          onChangeText={updateTitle}
+        />
+        <View style={[styles.subHeader, styles.bodyweight]}>
+          <Text style={styles.subHeaderTxt}>BW:</Text>
           <TextInput
-            style={styles.bwInput}
+            style={styles.subHeaderTxt}
             value={String(bodyweight)}
             keyboardType="number-pad"
             onChangeText={updateBW}
@@ -141,6 +150,12 @@ export default function Workout({ navigation, route }) {
 }
 
 const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
   headerRight: {
     color: 'blue',
     paddingRight: 20,
@@ -151,22 +166,32 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  header: {
+  background: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height: '100%',
+  },
+  subHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
-    borderWidth: 2,
+    paddingTop: 2,
+    paddingHorizontal: 15,
+  },
+  subHeaderTxt: {
+    marginHorizontal: 5,
+    fontWeight: 'bold',
+    fontSize: 18,
+    textShadowRadius: 5,
   },
   bodyweight: {
     width: '25%',
-  },
-  bwInput: {
-    width: '100%',
-    paddingLeft: 4,
+    paddingHorizontal: 0,
   },
   exercises: {
     width: '100%',
-    borderWidth: 2,
   },
 });

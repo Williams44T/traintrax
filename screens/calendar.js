@@ -63,7 +63,7 @@ export default function Calendar({ navigation, test }) {
       <View style={styles.btnBox}>
         <TouchableOpacity onPress={() => changeWeek('prev')}>
           <LinearGradient colors={btnGradient} style={styles.btn}>
-            <Text style={styles.btnText}>&lt;</Text>
+            <Text style={styles.btnText}>&#8678;</Text>
           </LinearGradient>
         </TouchableOpacity>
         <TouchableOpacity onPress={changeWeek}>
@@ -73,7 +73,7 @@ export default function Calendar({ navigation, test }) {
         </TouchableOpacity>
         <TouchableOpacity onPress={() => changeWeek('next')}>
           <LinearGradient colors={btnGradient} style={styles.btn}>
-            <Text style={styles.btnText}>&gt;</Text>
+            <Text style={styles.btnText}>&#8680;</Text>
           </LinearGradient>
         </TouchableOpacity>
       </View>

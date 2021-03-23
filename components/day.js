@@ -69,12 +69,14 @@ export default function Day({ navigation, date }) {
 
   return (
     <TouchableOpacity
-      // style={style}
       onPress={() =>
         navigation.navigate('Workout', { date, workout, updateWorkout })
       }
     >
-      <LinearGradient colors={['#9fa89f', 'transparent','#a2a2a2']} style={style}>
+      <LinearGradient
+        colors={['#9fa89f', 'transparent', '#a2a2a2']}
+        style={style}
+      >
         {preview}
       </LinearGradient>
     </TouchableOpacity>

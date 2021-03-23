@@ -29,7 +29,7 @@ export default function Set({ set, updateSet, idx }) {
 
   const repStyle =
     reps === ''
-      ? [styles.repsBox, { backgroundColor: 'lightgrey' }]
+      ? [styles.repsBox, { backgroundColor: '#fff' }]
       : styles.repsBox;
 
   return (
@@ -61,11 +61,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginHorizontal: 5,
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
   },
   input: {
     textAlign: 'center',
     fontSize: 12,
+    fontWeight: 'bold',
   },
   repsBox: {
     alignItems: 'center',
